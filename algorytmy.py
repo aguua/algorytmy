@@ -4,8 +4,6 @@
     Sumowanie szeregów potęgowych.
     Data ostatniej modyfikacji: 08.10.2019
     """
-from math import fabs
-
 def fac(n):
     """Zwarca silnię liczby n: n!"""
     factorial = 1
@@ -20,13 +18,17 @@ def pow(x, n):
         power = power * x
     return power
 
+def abs(a):
+    """Zwraca  wartość bezwględną liczby a: |a|"""
+    return a if a >= 0 else -a
+
 def blad_w(a, p):
     """Zwraca błąd względny przybliżenia p liczby a.
     Argumenty:
         a - wartość dokładna liczby
         p - przybliżenie liczby a
     """
-    return fabs(a-p)/a
+    return abs(a-p)/a
 
 def sin_mac_beg(x, n):
     """Zwraca  wartosc sin(x) jako sumę szeregu potęgowego z wzoru Taylora, sumując w  kolejności od początku."""
