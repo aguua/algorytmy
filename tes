@@ -1,0 +1,54 @@
+
+ """Testy algorytm<C3><B3>w"""
+
+-def test_dla_x(x, N):
++def test_dla_n(x, N):
++    wynik =""
+     for i in range (1,N):
+-        print ("n= {}".format(i))
+-        print("blad mac beg: {}"
+-          .format(blad_w(sin(x),sin_mac_beg(x,i)))
+-          )
+-        print("blad mac end : {}"
+-          )
+-        print("blad sum beg : {}"
+-          .format(blad_w(sin(x),sin_sum_beg(x,i)))
+-          )
+-        print("blad sum end : {}"
+-          .format(blad_w(sin(x),sin_sum_beg(x,i)))
+-          )
++        wynik_n ="n;{}\n" \
++               "mac beg; {}\n" \
++               "mac end; {}\n"\
++               "sum beg;{}\n" \
++               "sum end; {}\n""".format(i,
++                                        blad_w(sin(x), sin_mac_beg(x, i)),
++                                        blad_w(sin(x), sin_mac_end(x, i)),
++                                        blad_w(sin(x), sin_sum_beg(x, i)),
++                                        blad_w(sin(x), sin_sum_end(x, i)),
++def test_dla_x(N):
++    wynik =""
++    for x in x_list:
++        wynik_n ="x; {}\n" \
++               "mac beg; {}\n" \
++               "mac end; {}\n"\
++               "sum beg;{}\n" \
++               "sum end;{}\n""".format(x,
++                                        blad_w(sin(x), sin_mac_beg(x, N)),
++                                        blad_w(sin(x), sin_mac_end(x, N)),
++                                        blad_w(sin(x), sin_sum_beg(x, N)),
++                                        blad_w(sin(x), sin_sum_end(x, N)),
++                                        )
++        wynik += wynik_n
++    return wynik
+
+-test_dla_x(0.2, 13)
++
++
++wynik = test_dla_n(0.2, 13)
++print(wynik)
++f = open('testy_N.txt', 'w')
++f.write(wynik)
++
++xwynik = test_dla_x(2)
++print(xwynik)
