@@ -7,3 +7,12 @@ C:\Users\Agnieszka\dev\algorytmy2_gauss\algorytmy2_gauss\obj\Debug\algorytmy2_ga
 C:\Users\Agnieszka\dev\algorytmy2_gauss\algorytmy2_gauss\bin\Debug\MiscUtil.dll
 C:\Users\Agnieszka\dev\algorytmy2_gauss\algorytmy2_gauss\bin\Debug\MiscUtil.xml
 C:\Users\Agnieszka\dev\algorytmy2_gauss\algorytmy2_gauss\obj\Debug\algorytmy2_gauss.csproj.CopyComplete
+C:\Users\Agnieszka\dev\algorytmy\algorytmy2_gauss\algorytmy2_gauss\bin\Debug\algorytmy2_gauss.exe.config
+C:\Users\Agnieszka\dev\algorytmy\algorytmy2_gauss\algorytmy2_gauss\bin\Debug\algorytmy2_gauss.exe
+C:\Users\Agnieszka\dev\algorytmy\algorytmy2_gauss\algorytmy2_gauss\bin\Debug\algorytmy2_gauss.pdb
+C:\Users\Agnieszka\dev\algorytmy\algorytmy2_gauss\algorytmy2_gauss\bin\Debug\MiscUtil.dll
+C:\Users\Agnieszka\dev\algorytmy\algorytmy2_gauss\algorytmy2_gauss\bin\Debug\MiscUtil.xml
+C:\Users\Agnieszka\dev\algorytmy\algorytmy2_gauss\algorytmy2_gauss\obj\Debug\algorytmy2_gauss.csprojAssemblyReference.cache
+C:\Users\Agnieszka\dev\algorytmy\algorytmy2_gauss\algorytmy2_gauss\obj\Debug\algorytmy2_gauss.csproj.CopyComplete
+C:\Users\Agnieszka\dev\algorytmy\algorytmy2_gauss\algorytmy2_gauss\obj\Debug\algorytmy2_gauss.exe
+C:\Users\Agnieszka\dev\algorytmy\algorytmy2_gauss\algorytmy2_gauss\obj\Debug\algorytmy2_gauss.pdb

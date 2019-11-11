@@ -7,11 +7,11 @@ using MiscUtil;
 
 namespace algorytmy2_gauss
 {
-    public class MyMatrix<T>
+    public class MyMatrix<T> 
     {
         public T[,] A; //matrix A
         public T[] B;  //vector B
-        public T[] X; //vector X
+        public T[] X; //vector X to store a reference solution
         public T[] Xgauss; //vector X with a gauss result
         public int dimensions;
         public int[] col; // array for storing column order
@@ -28,21 +28,51 @@ namespace algorytmy2_gauss
                 col[i] = i;
         }
 
+        public MyMatrix( MyMatrix<T> matrix)
+        { 
+            this.dimensions = matrix.dimensions;
+            this.A = matrix.A;
+            this.B = matrix.B;
+            this.X = matrix.X;
+            this.Xgauss = matrix.Xgauss;
+            this.col = matrix.col;
+        }
+
+
+
+        public MyMatrix<T> DeepCopy()
+        {
+            MyMatrix<T> temp = new MyMatrix<T>(this.dimensions);
+            temp.A = this.A;
+            temp.B = this.B;
+            temp.X = this.X;
+            temp.Xgauss = this.Xgauss;
+            temp.dimensions = this.dimensions;
+            temp.col = this.col;
+            return temp;
+        }
+        public void ComputeVectorB()
+        {
+            for (int y = 0; y < dimensions; y++)
+                for (int x = 0; x < dimensions; x++)
+                    B[y] = Operator.Add(B[y], Operator.Multiply(A[x, y], X[x]));
+        }
+
         /// zeroing the matrix value in the step column below the diagonal
         public void ComputeStep(int step)  
         {
             for (int n = step; n < dimensions; n++)
             { 
                 T div = Operator.Divide(A[col[step-1], n], A[col[step-1], step-1]);
-                for (int i = n-1 ; i < dimensions; i++)
-                    A[col[i], n] = Operator.Subtract(A[col[i], n], Operator.Multiply(div, A[col[i], step]));
+                for (int i = 0 ; i < dimensions; i++)
+                    A[col[i], n] = Operator.Subtract(A[col[i], n], Operator.Multiply(div, A[col[i], step-1])); 
+
                 B[n] = Operator.Subtract(B[n], Operator.Multiply(div, B[step-1]));
             }
         }
 
-        /// <summary>
+
         ///  Calculate result as Xgauss vector from step matrix with 0 under diagonal
-        /// </summary>
         public void GetResult()
         {
             for (int j = dimensions - 1; j >= 0; j--)
@@ -59,17 +89,21 @@ namespace algorytmy2_gauss
         //Gauss eliminaction without pivoting.
         public void ComputeG()
         {
+           Console.WriteLine("Started G computing...");
+
             for (int i = 1; i<dimensions; i++)
             {
                 ComputeStep(i);
             }
-            //GetResult();
+            GetResult();
         }
 
 
         //Gauss elimination with partial pivoting.
         public void ComputePG() 
         {
+            Console.WriteLine("Started PG computing...");
+
             for (int n= 1; n < dimensions; n++)
             {   
                 //find the greates value from n column
@@ -101,6 +135,8 @@ namespace algorytmy2_gauss
         //Gauss elimination with complete pivoting.
         public void ComputeFG()
         {
+            Console.WriteLine("Started FG computing...");
+
             for (int n = 1; n < dimensions; n++)
             {
                 //find the greates value from matrix under diagonal
@@ -133,11 +169,48 @@ namespace algorytmy2_gauss
                     col[col_num] = col[n-1];
                     col[n-1] = temp;
                 }
-                ComputeStep(n);
+
+                // move up row with the greatest value
+                for (int n= 1; n < dimensions; n++)
+                {
+                    //find the greates value from n column
+                    int num = n - 1;
+                    T max = A[col[n - 1], n - 1];
+                    for (int i = n - 1; i < dimensions; i++)
+                    {
+                        T temp = Absolute(A[col[n - 1], i]);
+                        if (Operator.GreaterThan<T>(temp, max)) { max = temp; num = i; }
+                    }
+                    //move row with the greatest value in n column to the top of matrix A and vector B
+                    if (num != n)
+                    {
+                        for (int x = n - 1; x < dimensions; x++)
+                        {
+                            T tempmaxA = A[col[x], num];
+                            A[col[x], num] = A[col[x], n - 1];
+                            A[col[x], n - 1] = tempmaxA;
+                        }
+                        T tempB = B[num];
+                        B[num] = B[n - 1];
+                        B[n - 1] = tempB;
+                    }
+
+
+                    ComputeStep(n);
             }
             GetResult();
         }
 
+        public T GetDiff()
+        {
+            T sum = Operator.Subtract(X[0], Xgauss[0]);
+            for (int y = 0; y < dimensions; y++)
+            {
+                T diff = Operator.Subtract(X[y], Xgauss[y]);
+                sum = Operator.Add(sum, diff);
+            }
+            return sum;
+        }
 
 
         public void SetMatrixA(int i, int j, T value) { A[i, j] = value; }
@@ -154,6 +227,43 @@ namespace algorytmy2_gauss
             if (Operator.LessThan(obj, zero))
                 obj = Operator.Subtract(obj, Operator.Add(obj, obj));
             return obj;
+        }
+
+        public void PrintMatrixA()
+        {
+            for (int y = 0; y < dimensions; y++)
+            {
+                for (int x = 0; x < dimensions; x++)
+                    Console.Write(A[x, y] + "   ");
+
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+        }
+
+        public void PrintVectorB()
+        {
+            for (int y = 0; y < dimensions; y++)
+            {
+                    Console.Write(B[y] + "   ");
+            }
+            Console.WriteLine();
+        }
+        public void PrintVectorX()
+        {
+            for (int y = 0; y < dimensions; y++)
+            {
+                Console.Write(X[y] + "   ");
+            }
+            Console.WriteLine();
+        }
+        public void PrintVectorXgauss()
+        {
+            for (int y = 0; y < dimensions; y++)
+            {
+                Console.Write(Xgauss[y] + "   ");
+            }
+            Console.WriteLine();
         }
 
 

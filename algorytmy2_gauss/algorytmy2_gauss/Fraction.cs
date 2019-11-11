@@ -91,7 +91,6 @@ namespace algorytmy2_gauss
         }
 
 
-
         public Fraction Reduce()
         {
             BigInteger a = this.n < 0 ? -this.n : this.n;
@@ -116,6 +115,12 @@ namespace algorytmy2_gauss
                 this.d *= -1;
             }
             return this;
+        }
+
+        public double ToDouble()
+        {
+            double change = (double)this.n / (double)this.d;
+            return change;
         }
     }
 }

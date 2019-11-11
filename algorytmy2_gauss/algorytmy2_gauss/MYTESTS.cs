@@ -7,7 +7,7 @@ using System.Numerics;
 
 namespace algorytmy2_gauss
 {
-    class Tests
+    class MyTests
     {
         private int dimensions;
         private MyMatrix<float> matrixfloat;
@@ -18,7 +18,7 @@ namespace algorytmy2_gauss
         private MyMatrix<double> storedouble;
         private MyMatrix<Fraction> storefraction;
 
-        public Tests(int dimensions)
+        public MyTests(int dimensions)
         {
             matrixfloat = new MyMatrix<float>(dimensions);
            //storefloat = new MyMatrix<float>(dimensions);
@@ -29,7 +29,66 @@ namespace algorytmy2_gauss
             this.dimensions = dimensions;
         }
 
+        public void RunInitialTest()
+        {
+            matrixfloat.SetVectorB(0, 0);
+            matrixfloat.SetVectorB(1, 0);
+            matrixfloat.SetVectorB(2, 0);
 
+            matrixfloat.SetVectorX(0, 2);
+            matrixfloat.SetVectorX(1, -1);
+            matrixfloat.SetVectorX(2, 3);
+
+            matrixfloat.SetMatrixA(0, 0, -1);
+            matrixfloat.SetMatrixA(0, 1, 1);
+            matrixfloat.SetMatrixA(0, 2, 3);
+
+            matrixfloat.SetMatrixA(1, 0, 2);
+            matrixfloat.SetMatrixA(1, 1, -3);
+            matrixfloat.SetMatrixA(1, 2, -1);
+
+            matrixfloat.SetMatrixA(2, 0, 1);
+            matrixfloat.SetMatrixA(2, 1, -2);
+            matrixfloat.SetMatrixA(2, 2, -1);
+
+
+            matrixfloat.ComputeVectorB();
+            matrixfloat.PrintVectorB();
+            matrixfloat.ComputeFG();
+            matrixfloat.GetDiff();
+            matrixfloat.PrintVectorX();
+            matrixfloat.PrintVectorXgauss();
+            matrixfloat.PrintMatrixA();
+            storefloat.PrintMatrixA();
+
+        }
+        
+
+        public void ComputeVectorB() 
+        {
+            matrixdouble.ComputeVectorB();
+            matrixfloat.ComputeVectorB();
+            matrixfraction.ComputeVectorB();
+        }
+        public void CalculateG()
+        {
+            matrixdouble.ComputeG();
+            matrixfloat.ComputeG();
+            matrixfraction.ComputeG();
+        }
+        public void CalculatePG()
+        {
+            matrixdouble.ComputePG();
+            matrixfloat.ComputePG();
+            matrixfraction.ComputePG();
+        }
+
+        public void CalculateFG()
+        {
+            matrixdouble.ComputeFG();
+            matrixfloat.ComputeFG();
+            matrixfraction.ComputeFG();
+        }
 
         //Fill all matrix with random values [-2**16; 2**16-1]
         public void FillMatrixs()

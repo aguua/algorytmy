@@ -4,44 +4,43 @@ using System.Text;
 
 namespace algorytmy2_gauss
 {
+    public enum GaussType { Basic, Part, Full };
+
     class Program
     {
-
-        public static T GenerycznaMetoda<T>(T parametr)
-        {
-            Console.WriteLine("Metoda z podaniem typu parametru: " + parametr + parametr.GetType());
-            return parametr;
-            // Convert a Double to a Continent.
-            //double number = 6.0;
-            
-            
-                //Console.WriteLine("{0}",
-                                  //Convert.ChangeType(number, typeof(T)));
-            
-        }
-
 
 
         static void Main(string[] args)
         {
- 
-            Fraction f1 = new Fraction(2, 3);
-            Fraction f2 = new Fraction(1, 4);
 
-            var stringi1 = GenerycznaMetoda(f2);
-            Console.WriteLine("Metoda bez podania typu parametru: " + stringi1);
+            //MyTests newTest = new MyTests(3);
+            //newTest.RunForDouble();
+            //newTest.RunForF();
+            //newTest.RunInitialTest();
 
-            Tests newTest = new Tests(4);
-            newTest.FillMatrix();
-            newTest.PrintMatrixFloat();
-            newTest.PrintMatrixF();
-            newTest.PrintMatrixD();
+            /* for (int i = 5; i< 500 ; i ++)
+             {
+                 Tests newTest = new Tests(i);
+                 newTest.RunForDouble();
 
-            MyMatrix<float> macierzfloat = new MyMatrix<float>(2);
-            //macierzfloat.FillMatrix();
+             }
+             */
+            StringBuilder header = new StringBuilder();
+            header.AppendLine("Time;;;;;;;;;Difference");
+            header.AppendLine("Float;;;Double;;;Fraction;;;Float;;;Double;;;Fraction;;");
+            header.AppendLine("G;PG;FG;G;PG;FG;G;PG;FG;G;PG;FG;G;PG;FG;G;PG;FG");
+            File.WriteAllText("test.csv", header.ToString());
+
+            for (int i = 130; i< 501; i += 5)
+            {
+                StringBuilder content = new StringBuilder();
+                EfficiencyTest etest = new EfficiencyTest(i);
+                content.AppendLine(etest.Run());
+                File.AppendAllText("test.csv", content.ToString());
+            }
+
+            Console.WriteLine("Ready!");
             Console.ReadLine();
-
-
 
         }
     }
