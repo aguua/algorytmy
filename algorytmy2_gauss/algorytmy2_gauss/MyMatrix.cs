@@ -1,4 +1,10 @@
-﻿using System;
+﻿/// Agnieszka Harłozińska
+/// Algorytmy Numeryczne
+/// Zadanie 2
+/// Rozwiązywanie układów równań liniowych metodą eliminacji Gaussa
+
+
+using System;
 using MiscUtil;
 /// Library MiscUtil allows to use Operator class which provides
 /// high-performance support for the common operators (+, -, *, etc) for generic types
@@ -7,7 +13,7 @@ using MiscUtil;
 
 namespace algorytmy2_gauss
 {
-    public class MyMatrix<T> 
+    public class MyMatrix<T>
     {
         public T[,] A; //matrix A
         public T[] B;  //vector B
@@ -28,29 +34,7 @@ namespace algorytmy2_gauss
                 col[i] = i;
         }
 
-        public MyMatrix( MyMatrix<T> matrix)
-        { 
-            this.dimensions = matrix.dimensions;
-            this.A = matrix.A;
-            this.B = matrix.B;
-            this.X = matrix.X;
-            this.Xgauss = matrix.Xgauss;
-            this.col = matrix.col;
-        }
-
-
-
-        public MyMatrix<T> DeepCopy()
-        {
-            MyMatrix<T> temp = new MyMatrix<T>(this.dimensions);
-            temp.A = this.A;
-            temp.B = this.B;
-            temp.X = this.X;
-            temp.Xgauss = this.Xgauss;
-            temp.dimensions = this.dimensions;
-            temp.col = this.col;
-            return temp;
-        }
+        // multiplication matrix A and vector X to get vector B
         public void ComputeVectorB()
         {
             for (int y = 0; y < dimensions; y++)
@@ -59,15 +43,15 @@ namespace algorytmy2_gauss
         }
 
         /// zeroing the matrix value in the step column below the diagonal
-        public void ComputeStep(int step)  
+        public void ComputeStep(int step)
         {
             for (int n = step; n < dimensions; n++)
-            { 
-                T div = Operator.Divide(A[col[step-1], n], A[col[step-1], step-1]);
-                for (int i = 0 ; i < dimensions; i++)
-                    A[col[i], n] = Operator.Subtract(A[col[i], n], Operator.Multiply(div, A[col[i], step-1])); 
+            {
+                T div = Operator.Divide(A[col[step - 1], n], A[col[step - 1], step - 1]);
+                for (int i = 0; i < dimensions; i++)
+                    A[col[i], n] = Operator.Subtract(A[col[i], n], Operator.Multiply(div, A[col[i], step - 1]));
 
-                B[n] = Operator.Subtract(B[n], Operator.Multiply(div, B[step-1]));
+                B[n] = Operator.Subtract(B[n], Operator.Multiply(div, B[step - 1]));
             }
         }
 
@@ -76,9 +60,9 @@ namespace algorytmy2_gauss
         public void GetResult()
         {
             for (int j = dimensions - 1; j >= 0; j--)
-            { 
+            {
                 Xgauss[col[j]] = Operator.Divide(B[j], A[col[j], j]);
-                for (int i = dimensions -1; i > j; i--)
+                for (int i = dimensions - 1; i > j; i--)
                 {
                     A[col[i], j] = Operator.Divide(A[col[i], j], A[col[j], j]);
                     Xgauss[col[j]] = Operator.Subtract(Xgauss[col[j]], Operator.Multiply(A[col[i], j], Xgauss[col[i]]));
@@ -89,9 +73,9 @@ namespace algorytmy2_gauss
         //Gauss eliminaction without pivoting.
         public void ComputeG()
         {
-           Console.WriteLine("Started G computing...");
+            Console.WriteLine("Started G computing...");
 
-            for (int i = 1; i<dimensions; i++)
+            for (int i = 1; i < dimensions; i++)
             {
                 ComputeStep(i);
             }
@@ -100,34 +84,34 @@ namespace algorytmy2_gauss
 
 
         //Gauss elimination with partial pivoting.
-        public void ComputePG() 
+        public void ComputePG()
         {
-            Console.WriteLine("Started PG computing...");
+            // Console.WriteLine("Started PG computing...");
 
-            for (int n= 1; n < dimensions; n++)
-            {   
+            for (int n = 1; n < dimensions; n++)
+            {
                 //find the greates value from n column
                 int num = n - 1;
-                T max = A[col[n-1],n-1];
-                for (int i = n-1; i< dimensions; i++)
+                T max = A[col[n - 1], n - 1];
+                for (int i = n - 1; i < dimensions; i++)
                 {
-                    T temp = Absolute(A[col[n-1], i]);
+                    T temp = Absolute(A[col[n - 1], i]);
                     if (Operator.GreaterThan<T>(temp, max)) { max = temp; num = i; }
                 }
                 //move row with the greatest value in n column to the top of matrix A and vector B
-                if(num != n)
+                if (num != n)
                 {
-                    for( int x = n-1; x < dimensions; x++)
+                    for (int x = n - 1; x < dimensions; x++)
                     {
                         T tempmaxA = A[col[x], num];
-                        A[col[x], num] = A[col[x], n-1];
-                        A[col[x], n-1] = tempmaxA;
+                        A[col[x], num] = A[col[x], n - 1];
+                        A[col[x], n - 1] = tempmaxA;
                     }
                     T tempB = B[num];
-                    B[num] = B[n-1];
-                    B[n-1] = tempB;
+                    B[num] = B[n - 1];
+                    B[n - 1] = tempB;
                 }
-                 ComputeStep(n);
+                ComputeStep(n);
             }
             GetResult();
         }
@@ -135,72 +119,46 @@ namespace algorytmy2_gauss
         //Gauss elimination with complete pivoting.
         public void ComputeFG()
         {
-            Console.WriteLine("Started FG computing...");
+            //Console.WriteLine("Started FG computing...");
 
             for (int n = 1; n < dimensions; n++)
             {
                 //find the greates value from matrix under diagonal
-                int col_num = col[n-1];
-                int row_num = n-1;
+                int col_num = col[n - 1];
+                int row_num = n - 1;
                 T max = A[col[n], n];
-                for (int i = n-1; i <  dimensions; i++)
+                for (int i = n - 1; i < dimensions; i++)
                 {
-                    for(int j = n-1; j<  dimensions; j++)
+                    for (int j = n - 1; j < dimensions; j++)
                     {
                         T temp = Absolute(A[col[i], j]);
                         if (Operator.GreaterThan<T>(temp, max)) { max = temp; col_num = i; row_num = j; }
                     }
-                    
+
                 }
                 //move column with the greatest value to the beging of matrix A and vector B
-                if (col_num != (col[n]-1) && row_num !=(n-1))
+                if (col_num != (col[n] - 1) && row_num != (n - 1))
                 {
-                    for (int x = n-1; x <  dimensions; x++)
+                    for (int x = n - 1; x < dimensions; x++)
                     {
                         T tempmaxA = A[col[x], row_num];
-                        A[col[x], row_num] = A[col[x], n-1];
-                        A[col[x], n-1] = tempmaxA;
+                        A[col[x], row_num] = A[col[x], n - 1];
+                        A[col[x], n - 1] = tempmaxA;
                     }
                     T tempB = B[row_num];
-                    B[row_num] = B[n-1];
-                    B[n-1] = tempB;
+                    B[row_num] = B[n - 1];
+                    B[n - 1] = tempB;
                     //remember the column order change
                     int temp = col[col_num];
-                    col[col_num] = col[n-1];
-                    col[n-1] = temp;
+                    col[col_num] = col[n - 1];
+                    col[n - 1] = temp;
                 }
-
-                // move up row with the greatest value
-                for (int n= 1; n < dimensions; n++)
-                {
-                    //find the greates value from n column
-                    int num = n - 1;
-                    T max = A[col[n - 1], n - 1];
-                    for (int i = n - 1; i < dimensions; i++)
-                    {
-                        T temp = Absolute(A[col[n - 1], i]);
-                        if (Operator.GreaterThan<T>(temp, max)) { max = temp; num = i; }
-                    }
-                    //move row with the greatest value in n column to the top of matrix A and vector B
-                    if (num != n)
-                    {
-                        for (int x = n - 1; x < dimensions; x++)
-                        {
-                            T tempmaxA = A[col[x], num];
-                            A[col[x], num] = A[col[x], n - 1];
-                            A[col[x], n - 1] = tempmaxA;
-                        }
-                        T tempB = B[num];
-                        B[num] = B[n - 1];
-                        B[n - 1] = tempB;
-                    }
-
-
-                    ComputeStep(n);
+                ComputeStep(n);
             }
             GetResult();
         }
 
+        // get the difference between reference vector X and calculated result Xgauss
         public T GetDiff()
         {
             T sum = Operator.Subtract(X[0], Xgauss[0]);
@@ -245,7 +203,7 @@ namespace algorytmy2_gauss
         {
             for (int y = 0; y < dimensions; y++)
             {
-                    Console.Write(B[y] + "   ");
+                Console.Write(B[y] + "   ");
             }
             Console.WriteLine();
         }
