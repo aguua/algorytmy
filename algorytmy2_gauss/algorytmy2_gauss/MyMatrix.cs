@@ -165,7 +165,7 @@ namespace algorytmy2_gauss
             for (int y = 0; y < dimensions; y++)
             {
                 T diff = Operator.Subtract(X[y], Xgauss[y]);
-                sum = Operator.Add(sum, diff);
+                sum = Operator.Add(sum, Absolute(diff));  //14.11.2019 add absolute 
             }
             return sum;
         }
