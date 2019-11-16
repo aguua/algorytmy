@@ -1,4 +1,8 @@
-﻿using System;
+﻿/// Agnieszka Harłozińska
+/// Algorytmy Numeryczne
+/// Zadanie 2
+/// Rozwiązywanie układów równań liniowych metodą eliminacji Gaussa
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,18 +18,12 @@ namespace algorytmy2_gauss
         private MyMatrix<double> matrixdouble;
         private MyMatrix<Fraction> matrixfraction;
 
-        private MyMatrix<float> storefloat;
-        private MyMatrix<double> storedouble;
-        private MyMatrix<Fraction> storefraction;
 
         public MyTests(int dimensions)
         {
             matrixfloat = new MyMatrix<float>(dimensions);
-           //storefloat = new MyMatrix<float>(dimensions);
             matrixdouble = new MyMatrix<double>(dimensions);
-            //storedouble = new MyMatrix<double>(dimensions);
             matrixfraction = new MyMatrix<Fraction>(dimensions);
-           // storefraction = new MyMatrix<Fraction>(dimensions);
             this.dimensions = dimensions;
         }
 
@@ -59,7 +57,6 @@ namespace algorytmy2_gauss
             matrixfloat.PrintVectorX();
             matrixfloat.PrintVectorXgauss();
             matrixfloat.PrintMatrixA();
-            storefloat.PrintMatrixA();
 
         }
         

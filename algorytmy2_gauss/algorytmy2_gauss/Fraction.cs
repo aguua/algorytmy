@@ -1,4 +1,8 @@
-﻿using System;
+﻿/// Agnieszka Harłozińska
+/// Algorytmy Numeryczne
+/// Zadanie 2
+/// Rozwiązywanie układów równań liniowych metodą eliminacji Gaussa
+using System;
 using System.Numerics;
 
 namespace algorytmy2_gauss

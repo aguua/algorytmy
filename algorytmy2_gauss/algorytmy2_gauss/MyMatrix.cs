@@ -1,4 +1,10 @@
-﻿using System;
+﻿/// Agnieszka Harłozińska
+/// Algorytmy Numeryczne
+/// Zadanie 2
+/// Rozwiązywanie układów równań liniowych metodą eliminacji Gaussa
+
+
+using System;
 using MiscUtil;
 /// Library MiscUtil allows to use Operator class which provides
 /// high-performance support for the common operators (+, -, *, etc) for generic types
@@ -27,30 +33,8 @@ namespace algorytmy2_gauss
             for (int i = 0; i < dimensions; i++)
                 col[i] = i;
         }
-
-        public MyMatrix( MyMatrix<T> matrix)
-        { 
-            this.dimensions = matrix.dimensions;
-            this.A = matrix.A;
-            this.B = matrix.B;
-            this.X = matrix.X;
-            this.Xgauss = matrix.Xgauss;
-            this.col = matrix.col;
-        }
-
-
-
-        public MyMatrix<T> DeepCopy()
-        {
-            MyMatrix<T> temp = new MyMatrix<T>(this.dimensions);
-            temp.A = this.A;
-            temp.B = this.B;
-            temp.X = this.X;
-            temp.Xgauss = this.Xgauss;
-            temp.dimensions = this.dimensions;
-            temp.col = this.col;
-            return temp;
-        }
+         
+        // multiplication matrix A and vector X to get vector B
         public void ComputeVectorB()
         {
             for (int y = 0; y < dimensions; y++)
@@ -89,7 +73,7 @@ namespace algorytmy2_gauss
         //Gauss eliminaction without pivoting.
         public void ComputeG()
         {
-           Console.WriteLine("Started G computing...");
+           //Console.WriteLine("Started G computing...");
 
             for (int i = 1; i<dimensions; i++)
             {
@@ -102,7 +86,7 @@ namespace algorytmy2_gauss
         //Gauss elimination with partial pivoting.
         public void ComputePG() 
         {
-            Console.WriteLine("Started PG computing...");
+           // Console.WriteLine("Started PG computing...");
 
             for (int n= 1; n < dimensions; n++)
             {   
@@ -135,7 +119,7 @@ namespace algorytmy2_gauss
         //Gauss elimination with complete pivoting.
         public void ComputeFG()
         {
-            Console.WriteLine("Started FG computing...");
+            //Console.WriteLine("Started FG computing...");
 
             for (int n = 1; n < dimensions; n++)
             {
@@ -170,46 +154,44 @@ namespace algorytmy2_gauss
                     col[n-1] = temp;
                 }
 
-                // move up row with the greatest value
-                for (int n= 1; n < dimensions; n++)
+                //find the greates value from n column
+                int num = n - 1;
+                T max_in_col = A[col[n - 1], n - 1];
+                for (int i = n - 1; i < dimensions; i++)
                 {
-                    //find the greates value from n column
-                    int num = n - 1;
-                    T max = A[col[n - 1], n - 1];
-                    for (int i = n - 1; i < dimensions; i++)
+                    T temp = Absolute(A[col[n - 1], i]);
+                    if (Operator.GreaterThan<T>(temp, max_in_col)) { max_in_col = temp; num = i; }
+                }
+                //move row with the greatest value in n column to the top of matrix A and vector B
+                if (num != n)
+                {
+                    for (int x = n - 1; x < dimensions; x++)
                     {
-                        T temp = Absolute(A[col[n - 1], i]);
-                        if (Operator.GreaterThan<T>(temp, max)) { max = temp; num = i; }
+                        T tempmaxA = A[col[x], num];
+                        A[col[x], num] = A[col[x], n - 1];
+                        A[col[x], n - 1] = tempmaxA;
                     }
-                    //move row with the greatest value in n column to the top of matrix A and vector B
-                    if (num != n)
-                    {
-                        for (int x = n - 1; x < dimensions; x++)
-                        {
-                            T tempmaxA = A[col[x], num];
-                            A[col[x], num] = A[col[x], n - 1];
-                            A[col[x], n - 1] = tempmaxA;
-                        }
-                        T tempB = B[num];
-                        B[num] = B[n - 1];
-                        B[n - 1] = tempB;
-                    }
-
-
-                    ComputeStep(n);
+                    T tempB = B[num];
+                    B[num] = B[n - 1];
+                    B[n - 1] = tempB;
+                }
+                ComputeStep(n);
             }
             GetResult();
         }
 
+        // get the difference between reference vector X and calculated result Xgauss
         public T GetDiff()
         {
             T sum = Operator.Subtract(X[0], Xgauss[0]);
             for (int y = 0; y < dimensions; y++)
             {
                 T diff = Operator.Subtract(X[y], Xgauss[y]);
-                sum = Operator.Add(sum, diff);
+                sum = Operator.Add(Absolute(sum), Absolute(diff));
             }
             return sum;
+
+
         }
 
 
