@@ -8,12 +8,16 @@ using MiscUtil;
 /// Library MiscUtil allows to use Operator class which provides
 /// high-performance support for the common operators (+, -, *, etc) for generic types
 /// more details https://jonskeet.uk/csharp/miscutil/usage/genericoperators.html
-
+using MathNet.Numerics.LinearAlgebra.Double;
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.Distributions;
 
 namespace algorytmy3
 {
+    // to solve A · X = B
     public class MyMatrix<T>
     {
+
         public T[,] A; //matrix A
         public T[] B;  //vector B
         public T[] X; //vector X to store a reference solution
