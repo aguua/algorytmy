@@ -21,14 +21,21 @@ namespace algorytmy3
 
         public MatrixSetUp(int productAmount)   // TODO 3 rozmiary list do przeliczenia S: 10-100, M: 100:1000, B* tez? 
         {
-            this.p = productAmount;
-            this.parser = new Parser(quantity: p);
 
-            this.u = 10;
+            this.parser = new Parser(quantity: productAmount);
+            List<Result> results = parser.ResultsList;
+
+            this.u = results.Max(x => x.UserId) + 1;
+            this.p = results.Max(x => x.ProductId) + 1;
+
             U = SetMatrix(d, u);
             P = SetMatrix(d, p);
+
+            Ratings = SetRatingMatrix();
             Utils<double>.PrintMatrix(U);
             Utils<double>.PrintMatrix(P);
+            Utils<int>.PrintMatrix(Ratings);
+
 
 
         }
@@ -49,11 +56,8 @@ namespace algorytmy3
 
         private int[,] SetRatingMatrix()
         {
-
             List<Result> results = parser.ResultsList;
-            var row = results.Max(x => x.UserId) + 1;
-            var col = results.Max(x => x.ProductId) + 1;
-            int[,] array = new int[row, col];
+            int[,] array = new int[u, p];
 
             foreach (var result in results)
             {
@@ -67,11 +71,8 @@ namespace algorytmy3
                     array[result.UserId, result.ProductId] = 0;
                     throw new Exception("Rating not found, inserting 0...");
                 }
-
-              
-
             }
-            return                array;
+            return  array;
 
         }
     }

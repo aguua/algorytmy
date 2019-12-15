@@ -11,9 +11,9 @@ namespace algorytmy3
     {
         static void Main(string[] args)
         {
-           // MatrixSetUp setUP = new MatrixSetUp(5);
+            MatrixSetUp setUP = new MatrixSetUp(10);
 
-            Parser parser = new Parser(40);
+         /*   Parser parser = new Parser(40);
           Console.WriteLine(parser.ResultsList.Count);
           foreach(Result res in parser.ResultsList)
            {
@@ -24,7 +24,7 @@ namespace algorytmy3
 
             }
            
-
+    */
             Console.ReadLine();
             
         }
