@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ALS.cs" />
     <Compile Include="MatrixSetUp.cs" />
     <Compile Include="MyMatrix.cs" />
     <Compile Include="Parser.cs" />

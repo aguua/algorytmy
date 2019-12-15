@@ -11,7 +11,10 @@ namespace algorytmy3
     {
         static void Main(string[] args)
         {
-            MatrixSetUp setUP = new MatrixSetUp(10);
+            // MatrixSetUp setUP = new MatrixSetUp(10);
+
+            ALS als = new ALS();
+            als.Test();
 
          /*   Parser parser = new Parser(40);
           Console.WriteLine(parser.ResultsList.Count);
