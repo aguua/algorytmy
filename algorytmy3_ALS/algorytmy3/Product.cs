@@ -1,15 +1,16 @@
-﻿using System;
+﻿/// Agnieszka Harłozińska
+/// Algorytmy Numeryczne
+/// Zadanie 3
+/// Metoda ALS w systemach rekomendacji
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace algorytmy3
 {
     class Product
     {
-        int Id;
-        Dictionary<int, int> Reviews = new Dictionary<int, int>(); // user_id: rate
+        public int Id;
+        public Dictionary<int, int> Reviews = new Dictionary<int, int>(); // user_id(int): rate(int)
         public Product(int id, Dictionary<int,int> ratings)
         {
             this.Id = id;
