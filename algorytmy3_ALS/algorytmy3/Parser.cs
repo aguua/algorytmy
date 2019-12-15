@@ -16,8 +16,7 @@ namespace algorytmy3
     {
         public List<Result> ResultsList = new List<Result>();
         private readonly Dictionary<string, int> _usersDict = new Dictionary<string, int>();  // user_name (string) : user_id (int)
-        public Dictionary<string, int> _usersReviewsCount = new Dictionary<string, int>(); // user_name (string) : amount of user's reviews 
-        private Dictionary<int, int> _productIdMap = new Dictionary<int, int>();  // origin_product_id (int) : new-product-id (int)
+
         private int _nextInt = 0;   // to generate next Id number for user
         private int _nextIntProd = 0;   // to generate next Id number for product
 
@@ -29,7 +28,7 @@ namespace algorytmy3
             ResultsList = ParseData(quantity);
         }
         public Parser(int quantity)
-            : this(quantity, 10) { }
+            : this(quantity, 5) { }
 
 
         public List<Result> ParseData(int q)
@@ -51,19 +50,9 @@ namespace algorytmy3
             {
                 foreach (var userId in product.Reviews.Keys)
                 {
-                    ///convert here product id :  new dict for readed id : new id: ? 
-                     if (!_productIdMap.Keys.Contains(product.Id))
-                    {
-                        _productIdMap.Add(product.Id, _nextIntProd);
-                        _nextIntProd += 1;
-                    }
-
-
-                    var result = new Result(userId, _productIdMap[product.Id], product.Reviews[userId]);
-                     ResultsList.Add(result);
-                     
-
                     
+                    var result = new Result(userId, product.Id, product.Reviews[userId]);
+                     ResultsList.Add(result);
                 }
             }
 
@@ -131,14 +120,6 @@ namespace algorytmy3
                     try
                     {
                         reviewsBare.Add(userName, rate);
-                        try
-                        {
-                            _usersReviewsCount.Add(userName, 1);    // first review of that user 
-                        }
-                        catch (Exception) // it is not first review of that user
-                        {
-                            _usersReviewsCount[userName] += 1;   // next review of that user
-                        }
                     }
 
                     catch (Exception) // Key already in dictionary (user has previously reviewed the product)
@@ -154,9 +135,7 @@ namespace algorytmy3
 
             foreach (var userName in reviewsBare.Keys)
             {
-                // convert data only for users with more than one rate  
-                if(_usersReviewsCount[userName] >1 )
-                {
+
                     if (_usersDict.Keys.Contains(userName))
                     {
                         reviewsConverted.Add(_usersDict[userName], reviewsBare[userName]);
@@ -167,8 +146,6 @@ namespace algorytmy3
                         reviewsConverted.Add(_nextInt, reviewsBare[userName]);
                         _nextInt += 1;
                     }
-                }
- 
             }
 
             return reviewsConverted;
