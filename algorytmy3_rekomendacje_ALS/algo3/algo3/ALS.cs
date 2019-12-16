@@ -15,6 +15,7 @@ namespace algorytmy3
 
         private int d = 3;
         private double reg = 0.1;
+        private int iteration = 100;
 
         public ALS()
         {
@@ -34,26 +35,33 @@ namespace algorytmy3
             Console.WriteLine($"\ntestowe dane U: ");
             Utils<double>.PrintMatrix(U);
             Console.ReadLine();*/
-            for (int u = 0; u < usersCount; u++)   //wazne tylko do u < d  potem sie liczy, ale nie wpisuje do U, bo jest za małych rozmiarów ... 
+            for(int i = 0; i < iteration; i++)
             {
-                Console.WriteLine($"u = {u}");
-                StepForU(u);
+                for (int u = 0; u < usersCount; u++)   //wazne tylko do u < d  potem sie liczy, ale nie wpisuje do U, bo jest za małych rozmiarów ... 
+                    StepForU(u);
 
+                for (int p = 0; p < productsConut; p++)
+                    StepForP(p);
             }
 
 
-            SetTestVal();
-            for ( int p = 0; p <productsConut; p++)
-            {
-                Console.WriteLine($"p = {p}");
-                StepForP(p);
-
-
-            }
-
-            Console.WriteLine("\nDONE P  \n");
+            Console.WriteLine("\n P  \n");
             Utils<double>.PrintMatrix(P);
-            Console.WriteLine("\nDONE U  \n");
+            Console.WriteLine("\n U  \n");
+            Utils<double>.PrintMatrix(U);
+            for (int i = 0; i < iteration; i++)
+            {
+                for (int u = 0; u < usersCount; u++)   //wazne tylko do u < d  potem sie liczy, ale nie wpisuje do U, bo jest za małych rozmiarów ... 
+                    StepForU(u);
+
+                for (int p = 0; p < productsConut; p++)
+                    StepForP(p);
+            }
+
+
+            Console.WriteLine("\n P  \n");
+            Utils<double>.PrintMatrix(P);
+            Console.WriteLine("\n U  \n");
             Utils<double>.PrintMatrix(U);
 
 
