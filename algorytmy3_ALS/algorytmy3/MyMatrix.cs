@@ -164,7 +164,7 @@ namespace algorytmy3
                 T max = A[col[n - 1], n - 1];
                 for (int i = n - 1; i < dimensions; i++)
                 {
-                    T temp = Absolute(A[col[n - 1], i]);
+                    T temp = Absolute(A[col[n - 1], i]); 
                     if (Operator.GreaterThan<T>(temp, max)) { max = temp; num = i; }
                 }
                 //move row with the greatest value in n column to the top of matrix A and vector B
