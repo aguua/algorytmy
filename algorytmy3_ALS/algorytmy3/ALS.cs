@@ -11,21 +11,18 @@ namespace algorytmy3
         private int[,] Ratings;
         public double[,] P;
         public double[,] U;
-        public double[,] DoneP;
-        public double[,] DoneU;
+        MatrixSetUp Provider;
 
         private int d = 3;
         private double reg = 0.1;
 
         public ALS()
         {
-            /*MatrixSetUp Provider = new MatrixSetUp(2);  // give this argument for ALS 
-            U = Provider.U;
-            P = Provider.P;
-            Ratings = Provider.Ratings;
-            */
+            Provider = new MatrixSetUp(2);  // give this argument for ALS 
 
-            SetTestVal();
+            SetValues(Provider);
+
+            //SetTestVal();
 
             int usersCount = Ratings.GetLength(0);
             int productsConut = Ratings.GetLength(1);
@@ -41,7 +38,6 @@ namespace algorytmy3
             {
                 Console.WriteLine($"u = {u}");
                 StepForU(u);
-                DoneU = U;
 
             }
 
@@ -51,7 +47,6 @@ namespace algorytmy3
             {
                 Console.WriteLine($"p = {p}");
                 StepForP(p);
-                DoneP = P;
 
 
             }
@@ -62,6 +57,13 @@ namespace algorytmy3
             Utils<double>.PrintMatrix(DoneU);
 
 
+        }
+        
+        private void SetValues(MatrixSetUp Provider)
+        {
+            U = Provider.U;
+            P = Provider.P;
+            Ratings = Provider.Ratings;
         }
 
         private void StepForP(int p)
