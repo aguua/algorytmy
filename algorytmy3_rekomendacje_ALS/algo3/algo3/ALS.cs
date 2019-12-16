@@ -20,9 +20,9 @@ namespace algorytmy3
         {
             Provider = new MatrixSetUp(2);  // give this argument for ALS 
 
-            SetValues(Provider);
+           // SetValues(Provider);
 
-            //SetTestVal();
+            SetTestVal();
 
             int usersCount = Ratings.GetLength(0);
             int productsConut = Ratings.GetLength(1);
@@ -50,11 +50,11 @@ namespace algorytmy3
 
 
             }
-            Console.ReadLine();
+
             Console.WriteLine("\nDONE P  \n");
-            Utils<double>.PrintMatrix(DoneP);
+            Utils<double>.PrintMatrix(P);
             Console.WriteLine("\nDONE U  \n");
-            Utils<double>.PrintMatrix(DoneU);
+            Utils<double>.PrintMatrix(U);
 
 
         }
