@@ -11,6 +11,8 @@ namespace algorytmy3
         private int[,] Ratings;
         public double[,] P;
         public double[,] U;
+        public double[,] DoneP;
+        public double[,] DoneU;
 
         private int d = 3;
         private double reg = 0.1;
@@ -39,12 +41,66 @@ namespace algorytmy3
             {
                 Console.WriteLine($"u = {u}");
                 StepForU(u);
-                Console.ReadLine();
+                DoneU = U;
 
             }
+
+
+            SetTestVal();
+            for ( int p = 0; p <productsConut; p++)
+            {
+                Console.WriteLine($"p = {p}");
+                StepForP(p);
+                DoneP = P;
+
+
+            }
+            Console.ReadLine();
+            Console.WriteLine("\nDONE P  \n");
+            Utils<double>.PrintMatrix(DoneP);
+            Console.WriteLine("\nDONE U  \n");
+            Utils<double>.PrintMatrix(DoneU);
+
+
         }
 
-        
+        private void StepForP(int p)
+        {
+            List<int> _I_p = FlatNonZeroInColumn(p, Ratings);
+            double[,] _regE = EyeMulDouble(d);
+            MyMatrix<double> gauss = new MyMatrix<double>(d);
+
+            double[,] _U_I_p = MyMatrix<double>.GetMatrixFromOtherMatrixColumns(U, _I_p);
+            double[,] _U_I_p_T = MyMatrix<double>.Transpose(_U_I_p);
+            double[,] _B_u =
+                 MyMatrix<double>.Add(
+                     MyMatrix<double>.Multiplication(_U_I_p, _U_I_p_T),
+                     _regE
+                     );
+            double[] _W_u = Count_W_u(_I_p, U, Ratings, p);
+
+            gauss.A = _B_u;
+            gauss.B = _W_u;
+            gauss.ComputePG();
+            double[] GaussSolution = gauss.Xgauss;
+            P = InsertGaussColumn(p, P, GaussSolution);
+            
+
+            //test
+            /*
+            Console.WriteLine($"wymiary B_u: {_B_u.GetLength(0)}, {_B_u.GetLength(1)}");
+            Console.WriteLine($"\n U_I_p: \n");
+            Utils<double>.PrintMatrix(_U_I_p);
+            Console.WriteLine($"\n U_I_p_T: \n");
+            Utils<double>.PrintMatrix(_U_I_p_T);
+            Console.WriteLine($"\n re E \n");
+            Utils<double>.PrintMatrix(_regE); 
+
+            Console.WriteLine("\n solution \n");
+            Utils<double>.PrintVector(GaussSolution);
+            Console.WriteLine("\n P  \n");
+            Utils<double>.PrintMatrix(P);*/
+        }
 
         private void StepForU(int u)
         {
@@ -52,7 +108,7 @@ namespace algorytmy3
             double[,] _regE = EyeMulDouble(d);
             MyMatrix<double> gauss = new MyMatrix<double>(d);
 
-            //Teraz liczymy _P_I_u_(czyli kolumny z macierzy P o indeksach w _I_u_)
+            //Liczymy _P_I_u_(czyli kolumny z macierzy P o indeksach w _I_u_)
             double[,] _P_I_u = MyMatrix<double>.GetMatrixFromOtherMatrixColumns(P, _I_u);
             double[,] _P_I_u_T = MyMatrix<double>.Transpose(_P_I_u);
             double[,] _A_u = 
@@ -70,7 +126,7 @@ namespace algorytmy3
             U = InsertGaussColumn(u, U, GaussSolution);
 
             //test
-
+            /*
             Console.WriteLine($"wymiary A_u: {_A_u.GetLength(0)}, {_A_u.GetLength(1)}");
             Console.WriteLine($"\n P_I_u: \n");
             Utils<double>.PrintMatrix(_P_I_u);
@@ -82,10 +138,11 @@ namespace algorytmy3
             Utils<double>.PrintVector(GaussSolution);
             Console.WriteLine("\n U  \n");
             Utils<double>.PrintMatrix(U);
-
+            */
         }
 
         private double[] Count_V_u(List<int> listOfIndexes, double[,] arrayIndexValues, int[,] RatingsMatrix, int u)
+        
         {
             var V_u = new double[d];
             var j = 0;
@@ -96,12 +153,33 @@ namespace algorytmy3
             j = 0;
             for (; j < d; j++)
             {
-                foreach (var index in listOfIndexes) // for each non-zero rate from rating array
+                foreach (var index in listOfIndexes) // for each non-zero rate from rating array - looking in columns (products)
                 {
+                    
                     V_u[j] += arrayIndexValues[j, index] * RatingsMatrix[u, index]; 
                 }
             }
             return V_u;
+        }
+        private double[] Count_W_u(List<int> listOfIndexes, double[,] arrayIndexValues, int[,] RatingsMatrix, int p)
+
+        {
+            var W_u = new double[d];
+            var j = 0;
+            for (; j < d; j++)
+            {
+                W_u[j] = 0;
+            }
+            j = 0;
+            
+           foreach (var index in listOfIndexes) // for each non-zero rate from rating array  - looking in rows (users)
+                {
+                for (; j < d; j++)
+                {
+                    W_u[j] += arrayIndexValues[j, index] * RatingsMatrix[index, p];
+                }
+            }
+            return W_u;
         }
 
         // Insert Gauss solution for u column into u column inside matrixU
@@ -178,7 +256,7 @@ namespace algorytmy3
         public void Test()
         {
             //TestEyeMulDouble();
-            TestFloatNonZero();
+            //TestFloatNonZero();
             //TestColumnFromMatrix();
             //TestTransponce();
             //TestMultiplication();
