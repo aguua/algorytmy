@@ -4,6 +4,8 @@
 /// Rozwiązywanie układów równań liniowych metodą eliminacji Gaussa
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using MiscUtil;
 /// Library MiscUtil allows to use Operator class which provides
 /// high-performance support for the common operators (+, -, *, etc) for generic types
@@ -34,8 +36,90 @@ namespace algorytmy3
                 col[i] = i;
         }
 
+    //NEW macierz transponowana
+    public static T[,] Transpose(T[,] matrix)
+        {
+            int rows = matrix.GetLength(0);
+            int cols = matrix.GetLength(1);
+            T[,] transposed = new T[cols, rows];
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    transposed[j, i] = matrix[i, j];
+                }
+            }
+            return transposed;
+        }
+
+        //NEW generuj nowa macierz  stworzona z kolumn macierzy bazowej
+        public static T[,] GetMatrixFromOtherMatrixColumns(T[,] matrix, List<int> columns)
+        {
+            int rows = matrix.GetLength(0);
+            int cols = matrix.GetLength(1);
+            T[,] M = new T[rows, columns.Count()];
+            int c = 0;
+            for (int j = 0; j < cols; j++)
+            {
+                if (columns.Contains(j))
+                {
+                    for (int i = 0; i < rows; i++)
+                    {
+                       // Console.WriteLine($" i, j : {i},{j},  c= {c}");
+                        M[i, c] = matrix[i, j];
+                    }
+                    c += 1;
+                }
+            }
+            return M;
+        }
+        public static T[,] Add(T[,] A, T[,] B)
+        {
+            int m = A.GetLength(0);
+            int n = B.GetLength(1);
+            T[,] C = new T[m, n];
+            for (int i = 0; i < m; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    C[i, j] = Operator.Add(A[i, j], B[i, j]);
+                }
+            }
+            return C;
+        }
+
+        // Multipication  C = A*B
+        public static T[,] Multiplication(T[,] A, T[,] B)
+        {
+            T zero = Operator.Subtract(A[0,0], A[0,0]);
+            T[,] C = new T[A.GetLength(0), B.GetLength(1)];
+            if (A.GetLength(1) == B.GetLength(0))
+            {
+                for (int i = 0; i < C.GetLength(0); i++)
+                {
+                    for (int j = 0; j < C.GetLength(1); j++)
+                    {
+                        C[i, j] = zero;
+                        for (int k = 0; k < A.GetLength(1); k++) // OR k<b.GetLength(0)
+                            C[i, j] = Operator.Add(C[i, j], Operator.Multiply(A[i, k], B[k, j]));
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("\n Number of columns in First Matrix should be equal to Number of rows in Second Matrix.");
+                Console.WriteLine("\n Please re-enter correct dimensions.");
+                Environment.Exit(-1);
+            }
+            return C;
+        }
+        
+
+
+ 
+
         // multiplication matrix A and vector X to get vector B
-        public void Multiplication()
+        public void ComputeB()
         {
             for (int y = 0; y < dimensions; y++)
                 for (int x = 0; x < dimensions; x++)
@@ -80,7 +164,7 @@ namespace algorytmy3
                 T max = A[col[n - 1], n - 1];
                 for (int i = n - 1; i < dimensions; i++)
                 {
-                    T temp = Absolute(A[col[n - 1], i]);
+                    T temp = Absolute(A[col[n - 1], i]); 
                     if (Operator.GreaterThan<T>(temp, max)) { max = temp; num = i; }
                 }
                 //move row with the greatest value in n column to the top of matrix A and vector B

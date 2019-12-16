@@ -1,11 +1,11 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-/// Agnieszka Harłozińska
+﻿/// Agnieszka Harłozińska
 /// Algorytmy Numeryczne
 /// Zadanie 3
 /// Metoda ALS w systemach rekomendacji
+/// 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 namespace algorytmy3
 {
     class MatrixSetUp
@@ -32,15 +32,15 @@ namespace algorytmy3
             P = SetMatrix(d, p);
 
             Ratings = SetRatingMatrix();
-            Utils<double>.PrintMatrix(U);
-            Utils<double>.PrintMatrix(P);
-            Utils<int>.PrintMatrix(Ratings);
+           // Utils<double>.PrintMatrix(U);
+            //Utils<double>.PrintMatrix(P);
+           // Utils<int>.PrintMatrix(Ratings);
 
 
 
         }
-
-        private double[,] SetMatrix(int row, int col)
+        // todo change to private
+        public static double[,] SetMatrix(int row, int col)
         {
             double[,] array = new double[row, col];
             Random rnd = new Random();

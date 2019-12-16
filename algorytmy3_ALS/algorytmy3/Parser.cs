@@ -18,7 +18,6 @@ namespace algorytmy3
         private readonly Dictionary<string, int> _usersDict = new Dictionary<string, int>();  // user_name (string) : user_id (int)
 
         private int _nextInt = 0;   // to generate next Id number for user
-        private int _nextIntProd = 0;   // to generate next Id number for product
 
         private int minReviewsAmount;
 
