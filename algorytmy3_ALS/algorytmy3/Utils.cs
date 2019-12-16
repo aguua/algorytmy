@@ -3,7 +3,7 @@
 /// Zadanie 3
 /// Metoda ALS w systemach rekomendacji
 using System;
-
+using System.Collections.Generic;
 
 namespace algorytmy3
 {
@@ -17,9 +17,17 @@ namespace algorytmy3
                 {
                     Console.Write(array[i, j] + "   ");
                 }
-
                 Console.WriteLine();
             }
+        }
+
+        public static void PrintVector(T[] vector)
+        {
+            for (int j = 0; j < vector.GetLength(0); j++)
+            {
+                Console.Write(vector[j] + "   ");
+            }
+            Console.WriteLine();
         }
     }
 }

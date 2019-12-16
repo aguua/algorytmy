@@ -39,8 +39,8 @@ namespace algorytmy3
 
 
         }
-
-        private double[,] SetMatrix(int row, int col)
+        // todo change to private
+        public static double[,] SetMatrix(int row, int col)
         {
             double[,] array = new double[row, col];
             Random rnd = new Random();
