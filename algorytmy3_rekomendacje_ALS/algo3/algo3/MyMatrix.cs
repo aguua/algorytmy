@@ -11,7 +11,7 @@ using MiscUtil;
 /// high-performance support for the common operators (+, -, *, etc) for generic types
 /// more details https://jonskeet.uk/csharp/miscutil/usage/genericoperators.html
 
-namespace algorytmy3
+namespace algo3
 {
     // to solve A · X = B
     public class MyMatrix<T>

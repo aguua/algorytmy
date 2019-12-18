@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-namespace algorytmy3
+namespace algo3
 {
     class MatrixSetUp
     {

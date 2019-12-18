@@ -5,7 +5,7 @@
 using System;
 
 
-namespace algorytmy3
+namespace algo3
 {
     class Program
     {

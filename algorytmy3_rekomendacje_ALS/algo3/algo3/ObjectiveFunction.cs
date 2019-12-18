@@ -8,44 +8,50 @@ namespace algo3
 {
     class ObjectiveFunction
     {
-        public static double Calculate(double[,] Ratings, double[,]  U, double[,]  P, int d, double lambda)
+        public static double Calculate(int[,] Ratings, double[,] U, double[,] P, int d, double lambda)
         {
-            double  S_k = 0,       // Sum of (rating – U_u.T * P_p) ^ 2
+            double S_k = 0,       // Sum of (rating – U_u.T * P_p) ^ 2
                     S_u = 0,       // Sum of U columns squared norm 
                     S_p = 0,       // Sum of P columns squared norm 
                     result;
-            for (int u = 0; u < U.GetLength(1); u++)
+            double[,] U_T = MyMatrix<double>.Transpose(U);
+            double[,] ratingsCalculated = MyMatrix<double>.Multiplication(U_T, P);
+            Console.WriteLine($" rozmiary\n" +
+                $"ratings : {Ratings.GetLength(0)} x {Ratings.GetLength(1)}\n" +
+                $"p {P.GetLength(0)} x {P.GetLength(1)}\n" +
+                $"u {U.GetLength(0)} x {U.GetLength(1)}\n");
+            for (int u = 0; u < U.GetLength(1); u++) //Ratings.GetLength(0)
             {
                 for (int p = 0; p < P.GetLength(1); p++)
                 {
-                    double K = 0;
-                    for (int row = 0; row < d; row++)
+                    if (Ratings[u, p] != 0)
                     {
-                        K += U[row, u] * P[row, p];
+                        S_k += Math.Pow((Ratings[u, p] - ratingsCalculated[u, p]), 2);
                     }
-                    S_k += Math.Pow((Ratings[u, p] - K), 2);
-
-                    double PsquaredNorm = 0;
-                    for (int row = 0; row < d; row++)
-                    {
-                        PsquaredNorm += Math.Pow(P[row, p], 2);
-                    }
-                    S_u += PsquaredNorm;
                 }
+            }
 
-                double UsquaredNorm = 0;
-                for (int row = 0; row < d; row++)
+            for (int j = 0; j < P.GetLength(1); j++)
+            {
+                for (int i = 0; i < P.GetLength(0); i++)
                 {
-                    UsquaredNorm += Math.Pow(U[row, u], 2);
+                    S_p += Math.Pow(P[i, j], 2);
                 }
-                S_p += UsquaredNorm;
+            }
+
+            for (int j = 0; j < U.GetLength(1); j++)
+            {
+                for (int i = 0; i < U.GetLength(0); i++)
+                {
+                    S_u += Math.Pow(U[i, j], 2);
+                }
             }
             result = S_k + lambda * (S_u + S_p);
-            Console.WriteLine(result);
+            Console.WriteLine($"\n {result}");
             return result;
         }
     }
 
 
-}
 
+}

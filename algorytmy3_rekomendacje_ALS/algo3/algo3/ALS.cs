@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace algorytmy3
+namespace algo3
 {
     class ALS
     {
@@ -15,27 +15,26 @@ namespace algorytmy3
 
         private int d = 3;
         private double reg = 0.1;
-        private int iteration = 100;
+        private int iteration = 300;
 
         public ALS()
         {
-            Provider = new MatrixSetUp(2);  // give this argument for ALS 
+            Provider = new MatrixSetUp(15);  // give this argument for ALS 
 
-           // SetValues(Provider);
+           SetValues(Provider);
 
-            SetTestVal();
+           // SetTestVal();
 
             int usersCount = Ratings.GetLength(0);
             int productsConut = Ratings.GetLength(1);
             /*
             Console.WriteLine($"testowe dane ratings userxproduct [{usersCount}x{productsConut}]");
-            Utils<int>.PrintMatrix(Ratings);
-            Console.WriteLine($"\ntestowe dane P: ");
+
+            Console.WriteLine("\n P  \n");
             Utils<double>.PrintMatrix(P);
-            Console.WriteLine($"\ntestowe dane U: ");
-            Utils<double>.PrintMatrix(U);
-            Console.ReadLine();*/
-            for(int i = 0; i < iteration; i++)
+            Console.WriteLine("\n U  \n");
+            Utils<double>.PrintMatrix(U);*/
+            for (int i = 0; i < iteration; i++)
             {
                 for (int u = 0; u < usersCount; u++)   //wazne tylko do u < d  potem sie liczy, ale nie wpisuje do U, bo jest za małych rozmiarów ... 
                     StepForU(u);
@@ -43,12 +42,8 @@ namespace algorytmy3
                 for (int p = 0; p < productsConut; p++)
                     StepForP(p);
             }
+            ObjectiveFunction.Calculate(Ratings, U, P, d, reg);
 
-
-            Console.WriteLine("\n P  \n");
-            Utils<double>.PrintMatrix(P);
-            Console.WriteLine("\n U  \n");
-            Utils<double>.PrintMatrix(U);
             for (int i = 0; i < iteration; i++)
             {
                 for (int u = 0; u < usersCount; u++)   //wazne tylko do u < d  potem sie liczy, ale nie wpisuje do U, bo jest za małych rozmiarów ... 
@@ -58,11 +53,18 @@ namespace algorytmy3
                     StepForP(p);
             }
 
+            ObjectiveFunction.Calculate(Ratings, U, P, d, reg);
 
-            Console.WriteLine("\n P  \n");
-            Utils<double>.PrintMatrix(P);
-            Console.WriteLine("\n U  \n");
-            Utils<double>.PrintMatrix(U);
+            for (int i = 0; i < iteration; i++)
+            {
+                for (int u = 0; u < usersCount; u++)   //wazne tylko do u < d  potem sie liczy, ale nie wpisuje do U, bo jest za małych rozmiarów ... 
+                    StepForU(u);
+
+                for (int p = 0; p < productsConut; p++)
+                    StepForP(p);
+            }
+
+            ObjectiveFunction.Calculate(Ratings, U, P, d, reg);
 
 
         }

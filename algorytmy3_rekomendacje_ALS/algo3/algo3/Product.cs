@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 
 
-namespace algorytmy3
+namespace algo3
 {
     class Product
     {

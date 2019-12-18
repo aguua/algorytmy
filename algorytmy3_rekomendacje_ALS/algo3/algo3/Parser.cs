@@ -7,7 +7,7 @@ using System.IO;
 using System;
 using System.Linq;
 
-namespace algorytmy3
+namespace algo3
 {
     //to do :  filter for users:  take users, who reviewed min 3 products
     // add dict <int, int> user_id : number-of-reviews 
