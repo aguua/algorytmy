@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-namespace algorytmy3
+namespace algo3
 {
     class MatrixSetUp
     {
@@ -69,7 +69,7 @@ namespace algorytmy3
                 catch
                 {
                     array[result.UserId, result.ProductId] = 0;
-                    throw new Exception("Rating not found, inserting 0...");
+                    throw new Exception("No rate - insert 0");
                 }
             }
             return  array;

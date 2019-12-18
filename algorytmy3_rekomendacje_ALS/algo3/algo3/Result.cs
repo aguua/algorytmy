@@ -3,7 +3,7 @@
 /// Zadanie 3
 /// Metoda ALS w systemach rekomendacji
 
-namespace algorytmy3
+namespace algo3
 {
     public class Result
     {

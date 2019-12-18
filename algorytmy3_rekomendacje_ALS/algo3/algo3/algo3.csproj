@@ -49,6 +49,7 @@
     <Compile Include="ALS.cs" />
     <Compile Include="MatrixSetUp.cs" />
     <Compile Include="MyMatrix.cs" />
+    <Compile Include="ObjectiveFunction.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="Program.cs" />
