@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,12 +9,15 @@ namespace algo3
 {
     class ObjectiveFunction
     {
+
         public static double Calculate(int[,] Ratings, double[,] U, double[,] P, int d, double lambda)
+
         {
             double S_k = 0,       // Sum of (rating – U_u.T * P_p) ^ 2
                     S_u = 0,       // Sum of U columns squared norm 
                     S_p = 0,       // Sum of P columns squared norm 
                     result;
+
             double[,] U_T = MyMatrix<double>.Transpose(U);
             double[,] ratingsCalculated = MyMatrix<double>.Multiplication(U_T, P);
             Console.WriteLine($" rozmiary\n" +
@@ -22,7 +26,7 @@ namespace algo3
                 $"u {U.GetLength(0)} x {U.GetLength(1)}\n");
             for (int u = 0; u < U.GetLength(1); u++) //Ratings.GetLength(0)
             {
-                for (int p = 0; p < P.GetLength(1); p++)
+                for (int p = 0; p < P.GetLength(1); p++) //Ratings.GetLenght(1)
                 {
                     if (Ratings[u, p] != 0)
                     {

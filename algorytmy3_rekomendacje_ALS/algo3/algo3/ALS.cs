@@ -15,6 +15,7 @@ namespace algo3
 
         private int d = 3;
         private double reg = 0.1;
+
         private int iteration = 300;
 
         public ALS()
@@ -32,6 +33,7 @@ namespace algo3
 
             Console.WriteLine($"testowe dane ratings userxproduct [{usersCount}x{productsConut}]");
 
+
             Console.WriteLine("\n P  \n");
             Utils<double>.PrintMatrix(P);
             Console.WriteLine("\n U  \n");
@@ -47,7 +49,7 @@ namespace algo3
                 for (int p = 0; p < productsConut; p++)
                     StepForP(p);
             }
-            ObjectiveFunction.Calculate(Ratings, U, P, d, reg);
+
             */
 
         }

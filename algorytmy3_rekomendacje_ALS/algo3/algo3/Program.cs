@@ -14,7 +14,7 @@ namespace algo3
             // MatrixSetUp setUP = new MatrixSetUp(10);
 
             ALS als = new ALS();
-           // als.Test();
+           als.Test();
 
          /*   Parser parser = new Parser(40);
           Console.WriteLine(parser.ResultsList.Count);

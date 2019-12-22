@@ -69,7 +69,7 @@ namespace algo3
                 catch
                 {
                     array[result.UserId, result.ProductId] = 0;
-                    throw new Exception("Rating not found, inserting 0...");
+                    throw new Exception("No rate - insert 0");
                 }
             }
             return  array;
