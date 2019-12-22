@@ -21,19 +21,23 @@ namespace algo3
         {
             Provider = new MatrixSetUp(15);  // give this argument for ALS 
 
-           SetValues(Provider);
+            //SetValues(Provider);
 
-           // SetTestVal();
+            // SetTestVal();
+
+            Set3x3Test();
 
             int usersCount = Ratings.GetLength(0);
             int productsConut = Ratings.GetLength(1);
-            /*
+
             Console.WriteLine($"testowe dane ratings userxproduct [{usersCount}x{productsConut}]");
 
             Console.WriteLine("\n P  \n");
             Utils<double>.PrintMatrix(P);
             Console.WriteLine("\n U  \n");
-            Utils<double>.PrintMatrix(U);*/
+            Utils<double>.PrintMatrix(U);
+            StepForU(0);
+            /*
             for (int i = 0; i < iteration; i++)
             {
                 for (int u = 0; u < usersCount; u++)   //wazne tylko do u < d  potem sie liczy, ale nie wpisuje do U, bo jest za małych rozmiarów ... 
@@ -43,29 +47,7 @@ namespace algo3
                     StepForP(p);
             }
             ObjectiveFunction.Calculate(Ratings, U, P, d, reg);
-
-            for (int i = 0; i < iteration; i++)
-            {
-                for (int u = 0; u < usersCount; u++)   //wazne tylko do u < d  potem sie liczy, ale nie wpisuje do U, bo jest za małych rozmiarów ... 
-                    StepForU(u);
-
-                for (int p = 0; p < productsConut; p++)
-                    StepForP(p);
-            }
-
-            ObjectiveFunction.Calculate(Ratings, U, P, d, reg);
-
-            for (int i = 0; i < iteration; i++)
-            {
-                for (int u = 0; u < usersCount; u++)   //wazne tylko do u < d  potem sie liczy, ale nie wpisuje do U, bo jest za małych rozmiarów ... 
-                    StepForU(u);
-
-                for (int p = 0; p < productsConut; p++)
-                    StepForP(p);
-            }
-
-            ObjectiveFunction.Calculate(Ratings, U, P, d, reg);
-
+            */
 
         }
         
@@ -96,10 +78,13 @@ namespace algo3
             gauss.ComputePG();
             double[] GaussSolution = gauss.Xgauss;
             P = InsertGaussColumn(p, P, GaussSolution);
-            
+
 
             //test
-            /*
+            Console.Write($"Lista indeksów:");
+            foreach (int i in _I_p){
+                Console.Write($"{i}, ") ;
+            }
             Console.WriteLine($"wymiary B_u: {_B_u.GetLength(0)}, {_B_u.GetLength(1)}");
             Console.WriteLine($"\n U_I_p: \n");
             Utils<double>.PrintMatrix(_U_I_p);
@@ -111,7 +96,7 @@ namespace algo3
             Console.WriteLine("\n solution \n");
             Utils<double>.PrintVector(GaussSolution);
             Console.WriteLine("\n P  \n");
-            Utils<double>.PrintMatrix(P);*/
+            Utils<double>.PrintMatrix(P);
         }
 
         private void StepForU(int u)
@@ -138,7 +123,7 @@ namespace algo3
             U = InsertGaussColumn(u, U, GaussSolution);
 
             //test
-            /*
+            
             Console.WriteLine($"wymiary A_u: {_A_u.GetLength(0)}, {_A_u.GetLength(1)}");
             Console.WriteLine($"\n P_I_u: \n");
             Utils<double>.PrintMatrix(_P_I_u);
@@ -150,7 +135,7 @@ namespace algo3
             Utils<double>.PrintVector(GaussSolution);
             Console.WriteLine("\n U  \n");
             Utils<double>.PrintMatrix(U);
-            */
+            
         }
 
         private double[] Count_V_u(List<int> listOfIndexes, double[,] arrayIndexValues, int[,] RatingsMatrix, int u)
@@ -176,7 +161,7 @@ namespace algo3
         private double[] Count_W_u(List<int> listOfIndexes, double[,] arrayIndexValues, int[,] RatingsMatrix, int p)
 
         {
-            var W_u = new double[d];
+            var W_u = new double[d];   //  od listOfIndexes.Count? ? ?
             var j = 0;
             for (; j < d; j++)
             {
@@ -271,9 +256,17 @@ namespace algo3
             //TestFloatNonZero();
             //TestColumnFromMatrix();
             //TestTransponce();
-            //TestMultiplication();
+            TestMultiplication();
         }
         //TODO  to remove
+
+
+        private void Set3x3Test()
+        {
+            Ratings = new int[,] { { 0,4,0 }, { 5,0,3 }, { 0,0,5 }  };
+            P = new double[,] { { 0.1, 0.4, 0.7 }, { 0.2, 0.5, 0.8 }, { 0.3, 0.6, 0.9 } };
+            U = new double[,] { { 0.25, 0.35, 0.78 }, { 0.15, 0.45, 0.25 }, { 0.85, 0.1, 0.1 } };
+        }
         private void SetTestVal()
         {
             Ratings = new int[,] { { 0, 0, 0, 0, 4, 0, 5, 4, 0, 0 },
@@ -348,21 +341,15 @@ namespace algo3
 
         private void TestMultiplication()
         {
-            double[,] eyeMatrix = TestCreateEye(2);
-            eyeMatrix[0, 0] = 1;
-            eyeMatrix[0, 1] = 2;
-            eyeMatrix[1, 0] = 3;
-            eyeMatrix[1, 1] = 4;
-            Utils<double>.PrintMatrix(eyeMatrix);
-            double[,] m2 = TestCreateEye(2);
-            m2[0, 0] = 5;
-            m2[0, 1] = 6;
-            m2[1, 0] = 7;
-            m2[1, 1] = 8;
+            double[,] m1 = { { 0.4, 0.5, 0.6 } };
+            double[,] m2 = {{ 0.4 }, { 0.5}, { 0.6} };
             Utils<double>.PrintMatrix(m2);
+            Utils<double>.PrintMatrix(m1);
 
-            double[,] sol = MyMatrix<double>.Multiplication(eyeMatrix, m2);
-            Utils<double>.PrintMatrix(sol);   // [19, 20; 43, 50]
+            //double[,] sol = MyMatrix<double>.Multiplication(m2, m1);
+            double[,] sol = MyMatrix<double>.Multiplication(m1, m2);
+            Console.WriteLine("roziwzanie: \n");
+            Utils<double>.PrintMatrix(sol);   
         }
     }
 }

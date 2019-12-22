@@ -91,26 +91,28 @@ namespace algo3
         // Multipication  C = A*B
         public static T[,] Multiplication(T[,] A, T[,] B)
         {
+            int rows = A.GetLength(0);  //A.rows
+            int cols = B.GetLength(1);  //B.cols
             T zero = Operator.Subtract(A[0,0], A[0,0]);
-            T[,] C = new T[A.GetLength(0), B.GetLength(1)];
-            if (A.GetLength(1) == B.GetLength(0))
-            {
-                for (int i = 0; i < C.GetLength(0); i++)
+            T[,] C = new T[rows, cols];
+
+            if (A.GetLength(1) != B.GetLength(0))
+                throw new ArgumentException("Invalid matrix sizes.");
+
+            for (int i = 0; i < A.GetLength(0); i++) //A.rows
                 {
-                    for (int j = 0; j < C.GetLength(1); j++)
+                    for (int j = 0; j < B.GetLength(1); j++)  //B.cols
                     {
-                        C[i, j] = zero;
-                        for (int k = 0; k < A.GetLength(1); k++) // OR k<b.GetLength(0)
-                            C[i, j] = Operator.Add(C[i, j], Operator.Multiply(A[i, k], B[k, j]));
+
+                       C[i, j] = zero;
+                        for (int k = 0; k < A.GetLength(1); k++)  //A.cols= B.rows
+                        {
+                           C[i,j]= Operator.Add(C[i,j], Operator.Multiply(A[i, k], B[k, j]));
+                        }
+                        
                     }
                 }
-            }
-            else
-            {
-                Console.WriteLine("\n Number of columns in First Matrix should be equal to Number of rows in Second Matrix.");
-                Console.WriteLine("\n Please re-enter correct dimensions.");
-                Environment.Exit(-1);
-            }
+
             return C;
         }
         
