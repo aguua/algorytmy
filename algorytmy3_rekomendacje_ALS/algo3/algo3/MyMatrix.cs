@@ -78,6 +78,11 @@ namespace algo3
             int m = A.GetLength(0);
             int n = B.GetLength(1);
             T[,] C = new T[m, n];
+            T zero = Operator.Subtract(A[0, 0], A[0, 0]);
+
+            if (m != B.GetLength(0) || n != B.GetLength(1))
+                throw new ArgumentException("Matrix sizes are not equal.");
+
             for (int i = 0; i < m; i++)
             {
                 for (int j = 0; j < n; j++)

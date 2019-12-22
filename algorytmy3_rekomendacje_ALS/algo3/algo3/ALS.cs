@@ -37,6 +37,7 @@ namespace algo3
             Console.WriteLine("\n U  \n");
             Utils<double>.PrintMatrix(U);
             StepForU(0);
+            StepForU(1);
             /*
             for (int i = 0; i < iteration; i++)
             {
@@ -90,8 +91,6 @@ namespace algo3
             Utils<double>.PrintMatrix(_U_I_p);
             Console.WriteLine($"\n U_I_p_T: \n");
             Utils<double>.PrintMatrix(_U_I_p_T);
-            Console.WriteLine($"\n re E \n");
-            Utils<double>.PrintMatrix(_regE); 
 
             Console.WriteLine("\n solution \n");
             Utils<double>.PrintVector(GaussSolution);
@@ -108,30 +107,37 @@ namespace algo3
             //Liczymy _P_I_u_(czyli kolumny z macierzy P o indeksach w _I_u_)
             double[,] _P_I_u = MyMatrix<double>.GetMatrixFromOtherMatrixColumns(P, _I_u);
             double[,] _P_I_u_T = MyMatrix<double>.Transpose(_P_I_u);
-            double[,] _A_u = 
-                MyMatrix<double>.Add(
-                    MyMatrix<double>.Multiplication(_P_I_u, _P_I_u_T),
-                    _regE
-                    );
+            double[,] _A_u = MyMatrix<double>.Add(
+                                MyMatrix<double>.Multiplication(_P_I_u, _P_I_u_T),
+                                                                _regE);
             double[] _V_u = Count_V_u(_I_u, P, Ratings, u);
+
+
+            Console.WriteLine($"wymiary A_u: {_A_u.GetLength(0)}, {_A_u.GetLength(1)}");
+            Console.WriteLine($"\n P_I_u: \n");
+            Utils<double>.PrintMatrix(_P_I_u);
+
 
             //Jak już mamy wszystko policzone, możemy podstawić A_u oraz V_u do gaussa:
             gauss.A = _A_u;
             gauss.B = _V_u;
-            gauss.ComputePG();
-            double[] GaussSolution = gauss.Xgauss;
-            U = InsertGaussColumn(u, U, GaussSolution);
 
-            //test
-            
-            Console.WriteLine($"wymiary A_u: {_A_u.GetLength(0)}, {_A_u.GetLength(1)}");
-            Console.WriteLine($"\n P_I_u: \n");
-            Utils<double>.PrintMatrix(_P_I_u);
             Console.WriteLine("\n A jako A_u \n");
             Utils<double>.PrintMatrix(gauss.A);
             Console.WriteLine("\n V_u jako B \n");
             Utils<double>.PrintVector(gauss.B);
             Console.WriteLine("\n solution \n");
+
+
+            gauss.ComputePG();
+            double[] GaussSolution = gauss.Xgauss;
+            U = InsertGaussColumn(u, U, GaussSolution);
+
+            //test
+            Console.WriteLine($"\n reg_ET \n");
+            Utils<double>.PrintMatrix(_regE);
+
+
             Utils<double>.PrintVector(GaussSolution);
             Console.WriteLine("\n U  \n");
             Utils<double>.PrintMatrix(U);
@@ -256,7 +262,8 @@ namespace algo3
             //TestFloatNonZero();
             //TestColumnFromMatrix();
             //TestTransponce();
-            TestMultiplication();
+            //TestMultiplication();
+            TestAdding();
         }
         //TODO  to remove
 
@@ -305,6 +312,14 @@ namespace algo3
             double[,] eyeMatrix = EyeMulDouble(5);
             Utils<double>.PrintMatrix(eyeMatrix);
         }
+        public  void TestAdding()
+        {
+            P = new double[,] { { 0.1, 0.4, 0.7 }, { 0.2, 0.5, 0.8 }, { 0.3, 0.6, 0.9 } };
+            U = new double[,] { { 0.25, 0.35, 0.78 }, { 0.15, 0.45, 0.25 }, { 0.85, 0.1, 0.1 } };
+            double[,]  Result = MyMatrix<double>.Add(U, P);
+            Console.WriteLine("\n wynik dodowania");
+            Utils<double>.PrintMatrix(Result);
+        }
         private void TestFloatNonZero()
         {
             int[,] eyeMatrix = CreateEye(5);
@@ -319,14 +334,18 @@ namespace algo3
         }
         private void TestColumnFromMatrix()
         {
-            double[,] eyeMatrix = TestCreateEye(5);
-            eyeMatrix[2, 1] = 8;
-            eyeMatrix[0, 2] = 9;
-            Utils<double>.PrintMatrix(eyeMatrix);
+            P = new double[,] { {0.93119636, 0.01215318, 0.82254304, 0.92704314, 0.72097256,
+                                 0.1119594 , 0.05907673, 0.27337659, 0.51578453, 0.47299487 },
+                                {0.1671686, 0.02328032, 0.64793332, 0.46310597, 0.98508579,
+                                 0.23390272, 0.34862754, 0.29751156, 0.81994987, 0.32293732 },
+                                {0.72302848, 0.91165485, 0.70980305, 0.20125138, 0.33071352,
+                                 0.40941998, 0.6984816 , 0.94986196, 0.52719633, 0.66722182 }
+                                }; 
+
             List<int> myL = new List<int>();
-            myL.Add(1);
-            myL.Add(2);
-            double[,] M = MyMatrix<double>.GetMatrixFromOtherMatrixColumns(eyeMatrix, myL);
+            myL.Add(4);
+            myL.Add(6);
+            double[,] M = MyMatrix<double>.GetMatrixFromOtherMatrixColumns(P, myL);
             Utils<double>.PrintMatrix(M);
         }
         private void TestTransponce()
