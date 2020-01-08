@@ -22,7 +22,7 @@ namespace algo3
             string s = "\nProduct Id: " + Id + "\nReviews: " + Reviews.Count + "\n";
             foreach (KeyValuePair<int, int> r in Reviews)
             {
-                s += "customer: " + r.Key + " | ";
+                s += "user: " + r.Key + " | ";
                 s += "rating: " + r.Value + "\n";
             }
 

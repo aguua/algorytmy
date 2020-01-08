@@ -20,10 +20,6 @@ namespace algo3
 
             double[,] U_T = MyMatrix<double>.Transpose(U);
             double[,] ratingsCalculated = MyMatrix<double>.Multiplication(U_T, P);
-            Console.WriteLine($" rozmiary\n" +
-                $"ratings : {Ratings.GetLength(0)} x {Ratings.GetLength(1)}\n" +
-                $"p {P.GetLength(0)} x {P.GetLength(1)}\n" +
-                $"u {U.GetLength(0)} x {U.GetLength(1)}\n");
             for (int u = 0; u < U.GetLength(1); u++) //Ratings.GetLength(0)
             {
                 for (int p = 0; p < P.GetLength(1); p++) //Ratings.GetLenght(1)
@@ -51,7 +47,7 @@ namespace algo3
                 }
             }
             result = S_k + lambda * (S_u + S_p);
-            Console.WriteLine($"\n {result}");
+            Console.WriteLine($"\n funkcja celu: {result}");
             return result;
         }
     }

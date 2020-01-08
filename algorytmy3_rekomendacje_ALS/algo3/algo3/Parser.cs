@@ -16,9 +16,9 @@ namespace algo3
     {
         public List<Result> ResultsList = new List<Result>();
         private readonly Dictionary<string, int> _usersDict = new Dictionary<string, int>();  // user_name (string) : user_id (int)
-
+        private Dictionary<int, int> _productIdMap = new Dictionary<int, int>();  // origin_product_id (int) : new-product-id (int)
         private int _nextInt = 0;   // to generate next Id number for user
-
+        private int _nextIntProd = 0;   // to generate next Id number for product
         private int minReviewsAmount;
 
         public Parser(int quantity, int minReviewsAmount)   // how many products should be find with min amount of reviews

@@ -13,24 +13,24 @@ namespace algo3
         public double[,] U;
         MatrixSetUp Provider;
 
-        private int d = 3;
+        private int d = 4;
         private double reg = 0.1;
 
         private int iteration = 300;
 
         public ALS()
         {
-            Provider = new MatrixSetUp(15);  // give this argument for ALS 
+            Provider = new MatrixSetUp(15,d);  // give this argument for ALS 
 
-            //SetValues(Provider);
+            SetValues(Provider);
 
             // SetTestVal();
 
-            Set3x3Test();
+           // Set3x3Test();
 
             int usersCount = Ratings.GetLength(0);
             int productsConut = Ratings.GetLength(1);
-
+            /*
             Console.WriteLine($"testowe dane ratings userxproduct [{usersCount}x{productsConut}]");
 
 
@@ -38,19 +38,22 @@ namespace algo3
             Utils<double>.PrintMatrix(P);
             Console.WriteLine("\n U  \n");
             Utils<double>.PrintMatrix(U);
-            StepForU(0);
-            StepForU(1);
-            /*
-            for (int i = 0; i < iteration; i++)
+            */
+            for( int fun=0; fun< 10; fun++)
             {
-                for (int u = 0; u < usersCount; u++)   //wazne tylko do u < d  potem sie liczy, ale nie wpisuje do U, bo jest za małych rozmiarów ... 
-                    StepForU(u);
+                for (int i = 0; i < iteration; i++)
+                {
+                    for (int u = 0; u < usersCount; u++)   //wazne tylko do u < d  potem sie liczy, ale nie wpisuje do U, bo jest za małych rozmiarów ... 
+                        StepForU(u);
 
-                for (int p = 0; p < productsConut; p++)
-                    StepForP(p);
+                    for (int p = 0; p < productsConut; p++)
+                        StepForP(p);
+                }
+                ObjectiveFunction.Calculate(Ratings, U, P, d, reg);
             }
 
-            */
+
+
 
         }
         
@@ -75,29 +78,11 @@ namespace algo3
                      _regE
                      );
             double[] _W_u = Count_W_u(_I_p, U, Ratings, p);
-
             gauss.A = _B_u;
             gauss.B = _W_u;
             gauss.ComputePG();
             double[] GaussSolution = gauss.Xgauss;
             P = InsertGaussColumn(p, P, GaussSolution);
-
-
-            //test
-            Console.Write($"Lista indeksów:");
-            foreach (int i in _I_p){
-                Console.Write($"{i}, ") ;
-            }
-            Console.WriteLine($"wymiary B_u: {_B_u.GetLength(0)}, {_B_u.GetLength(1)}");
-            Console.WriteLine($"\n U_I_p: \n");
-            Utils<double>.PrintMatrix(_U_I_p);
-            Console.WriteLine($"\n U_I_p_T: \n");
-            Utils<double>.PrintMatrix(_U_I_p_T);
-
-            Console.WriteLine("\n solution \n");
-            Utils<double>.PrintVector(GaussSolution);
-            Console.WriteLine("\n P  \n");
-            Utils<double>.PrintMatrix(P);
         }
 
         private void StepForU(int u)
@@ -113,37 +98,12 @@ namespace algo3
                                 MyMatrix<double>.Multiplication(_P_I_u, _P_I_u_T),
                                                                 _regE);
             double[] _V_u = Count_V_u(_I_u, P, Ratings, u);
-
-
-            Console.WriteLine($"wymiary A_u: {_A_u.GetLength(0)}, {_A_u.GetLength(1)}");
-            Console.WriteLine($"\n P_I_u: \n");
-            Utils<double>.PrintMatrix(_P_I_u);
-
-
             //Jak już mamy wszystko policzone, możemy podstawić A_u oraz V_u do gaussa:
             gauss.A = _A_u;
             gauss.B = _V_u;
-
-            Console.WriteLine("\n A jako A_u \n");
-            Utils<double>.PrintMatrix(gauss.A);
-            Console.WriteLine("\n V_u jako B \n");
-            Utils<double>.PrintVector(gauss.B);
-            Console.WriteLine("\n solution \n");
-
-
             gauss.ComputePG();
             double[] GaussSolution = gauss.Xgauss;
             U = InsertGaussColumn(u, U, GaussSolution);
-
-            //test
-            Console.WriteLine($"\n reg_ET \n");
-            Utils<double>.PrintMatrix(_regE);
-
-
-            Utils<double>.PrintVector(GaussSolution);
-            Console.WriteLine("\n U  \n");
-            Utils<double>.PrintMatrix(U);
-            
         }
 
         private double[] Count_V_u(List<int> listOfIndexes, double[,] arrayIndexValues, int[,] RatingsMatrix, int u)
@@ -352,7 +312,7 @@ namespace algo3
         }
         private void TestTransponce()
         {
-            MatrixSetUp provider = new MatrixSetUp(5);
+            MatrixSetUp provider = new MatrixSetUp(5,3);
             double[,] U = provider.U;
             double[,] trans = MyMatrix<double>.Transpose(U);
             Utils<double>.PrintMatrix(U);

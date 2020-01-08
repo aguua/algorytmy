@@ -204,6 +204,23 @@ namespace algo3
             }
             return sum;
         }
+        public double CountDifference(double[,] original, double[,] changed)
+        {
+            double difference = 0;
+            var counter = 0;
+            for (var i = 0; i < original.GetLength(0); i++)
+            {
+                for (var j = 0; j < original.GetLength(1); j++)
+                {
+                    if (original[i, j] == 0) continue;
+
+                    difference += Math.Abs((original[i, j] - changed[i, j]));
+                    counter++;
+                }
+            }
+
+            return difference / counter;
+        }
         public void SetMatrixA(int i, int j, T value) { A[i, j] = value; }
         public void SetVectorB(int j, T value) { B[j] = value; }
         public void SetVectorX(int j, T value) { X[j] = value; }
