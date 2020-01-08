@@ -15,26 +15,29 @@ namespace algo3
     class Parser
     {
         public List<Result> ResultsList = new List<Result>();
+        public List <Result> FilteredResultList = new List<Result>();
         private readonly Dictionary<string, int> _usersDict = new Dictionary<string, int>();  // user_name (string) : user_id (int)
-        private Dictionary<int, int> _productIdMap = new Dictionary<int, int>();  // origin_product_id (int) : new-product-id (int)
+     
         private int _nextInt = 0;   // to generate next Id number for user
-        private int _nextIntProd = 0;   // to generate next Id number for product
+     
         private int minReviewsAmount;
 
-        public Parser(int quantity, int minReviewsAmount)   // how many products should be find with min amount of reviews
+        public Parser(int productAmount, int userAmount, int minReviewsAmount)   // how many products should be find with min amount of reviews
         {
             this.minReviewsAmount = minReviewsAmount;
-            ResultsList = ParseData(quantity);
+            ResultsList = ParseData( productAmount,  userAmount);
+            FilteredResultList = FiltrResult(productAmount, userAmount);
         }
-        public Parser(int quantity)
-            : this(quantity, 5) { }
+        public Parser(int productAmount, int userAmount)
+            : this(productAmount, userAmount, 5) { }
 
+        
 
-        public List<Result> ParseData(int q)
+        public List<Result> ParseData(int productAmount, int userAmount)
         {
             List<Result> results = new List<Result>();
             var productsFound = new List<Product>();
-            List<List<string>> dataFromFile = ReadFromFile(q);
+            List<List<string>> dataFromFile = ReadFromFile(productAmount);
             dataFromFile = FilterForUnique(dataFromFile);
             int id = 0;
             foreach (List<string> result in dataFromFile)
@@ -70,7 +73,7 @@ namespace algo3
                                 loadedLines = new List<string>();
                             else if (line.Length == 0 && loadedLines != null)
                             {
-                                if (CheckViability(loadedLines))
+                                if (CheckGroupAndReviewsAmount(loadedLines))
                                     results.Add(loadedLines);
                                 loadedLines = null;
                             }
@@ -83,7 +86,7 @@ namespace algo3
             return results;
         }
 
-        private bool CheckViability(List<string> product)
+        private bool CheckGroupAndReviewsAmount(List<string> product)
         {
             if (product.Contains("  group: Book"))
             {
@@ -148,6 +151,42 @@ namespace algo3
             }
 
             return reviewsConverted;
+        }
+
+        private List<Result> FiltrResult(int productAmount, int userAmount)
+        {
+            var mostRatedProducts = ResultsList
+                .GroupBy(x => x.ProductId)
+                .Select(group => new
+                {
+                    ProductId = group.Key,
+                    RatingCount = group.Count()
+                })
+                .OrderByDescending(x => x.RatingCount)
+                .Take(productAmount)
+                .Select(x => x.ProductId)
+                .ToList();
+            var byProductResults = ResultsList
+                .Where(x => mostRatedProducts
+                .Contains(x.ProductId))
+                .ToList();
+            var mostActiveUsers = byProductResults
+                .GroupBy(x => x.UserId)
+                .Select(group => new
+                {
+                    UserId = group.Key,
+                    Count = group.Count()
+                })
+                .OrderByDescending(x => x.Count)
+                .Where(x => x.Count < 400)
+                .Take(userAmount)
+                .Select(x => x.UserId)
+                .ToList();
+            var finalResult = byProductResults
+                .Where(x => mostActiveUsers
+                .Contains(x.UserId))
+                .ToList();
+            return finalResult;
         }
     }
 }

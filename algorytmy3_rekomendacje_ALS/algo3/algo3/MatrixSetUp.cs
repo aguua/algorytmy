@@ -15,15 +15,16 @@ namespace algo3
         private int d;  //parameter
 
         private Parser parser;
+        
         public int[,] Ratings { get; set; }
         public double[,] U { get; set; }
         public double[,] P { get; set; }
 
-        public MatrixSetUp(int productAmount, int d)   // TODO 3 rozmiary list do przeliczenia S: 10-100, M: 100:1000, B* tez? 
+        public MatrixSetUp(int productAmount, int userAmount, int d) 
         {
             this.d = d;
-            this.parser = new Parser(quantity: productAmount);
-            List<Result> results = parser.ResultsList;
+            this.parser = new Parser(productAmount, userAmount);
+            List<Result> results = parser.FilteredResultList;
 
             this.u = results.Max(x => x.UserId) + 1;
             this.p = results.Max(x => x.ProductId) + 1;
@@ -32,14 +33,7 @@ namespace algo3
             P = SetMatrix(d, p);
 
             Ratings = SetRatingMatrix();
-           // Utils<double>.PrintMatrix(U);
-            //Utils<double>.PrintMatrix(P);
-           // Utils<int>.PrintMatrix(Ratings);
-
-
-
         }
-        // todo change to private
         public static double[,] SetMatrix(int row, int col)
         {
             double[,] array = new double[row, col];
