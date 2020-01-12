@@ -204,6 +204,7 @@ namespace algo3
             }
             return sum;
         }
+        //AVG Error 
         public double CountDifference(double[,] original, double[,] changed)
         {
             double difference = 0;

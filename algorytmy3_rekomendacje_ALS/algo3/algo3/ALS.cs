@@ -13,14 +13,16 @@ namespace algo3
         public double[,] U;
         MatrixSetUp Provider;
 
-        private int d = 4;
-        private double reg = 0.1;
+        private int d;
+        private double reg;
 
         private int iteration = 300;
 
-        public ALS()
+        public ALS(int prodAmount, int d, double reg )
         {
-            Provider = new MatrixSetUp(15,d);  // give this argument for ALS 
+            this.d = d;
+            this.reg = reg;
+            Provider = new MatrixSetUp(prodAmount,d);  // give this argument for ALS 
 
             SetValues(Provider);
 

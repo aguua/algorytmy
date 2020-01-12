@@ -11,23 +11,9 @@ namespace algo3
     {
         static void Main(string[] args)
         {
-            // MatrixSetUp setUP = new MatrixSetUp(10);
 
-            ALS als = new ALS();
-           //als.Test();
+            ALS als = new ALS(100, 3, 0.1);  // (prodAmount, d, reg)
 
-         /*   Parser parser = new Parser(40);
-          Console.WriteLine(parser.ResultsList.Count);
-          foreach(Result res in parser.ResultsList)
-           {
-
-                 Console.WriteLine($" Produkt: {res.ProductId}, user: {res.UserId}, rate: {res.Rating}"); 
-
-
-
-            }
-           
-    */
             Console.ReadLine();
             
         }

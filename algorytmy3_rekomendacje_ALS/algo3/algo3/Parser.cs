@@ -17,17 +17,16 @@ namespace algo3
         public List<Result> ResultsList = new List<Result>();
         private readonly Dictionary<string, int> _usersDict = new Dictionary<string, int>();  // user_name (string) : user_id (int)
         private Dictionary<int, int> _productIdMap = new Dictionary<int, int>();  // origin_product_id (int) : new-product-id (int)
+        public Dictionary<string, int> _usersReviewsCount = new Dictionary<string, int>(); // user_name (string) : amount of user's reviews 
         private int _nextInt = 0;   // to generate next Id number for user
         private int _nextIntProd = 0;   // to generate next Id number for product
-        private int minReviewsAmount;
 
-        public Parser(int quantity, int minReviewsAmount)   // how many products should be find with min amount of reviews
+        private int minReviewsAmount= 10;   //  to sort user and products
+        public Parser(int quantity)   // how many products should be find with min amount of reviews
         {
-            this.minReviewsAmount = minReviewsAmount;
             ResultsList = ParseData(quantity);
         }
-        public Parser(int quantity)
-            : this(quantity, 5) { }
+
 
 
         public List<Result> ParseData(int q)
@@ -49,8 +48,13 @@ namespace algo3
             {
                 foreach (var userId in product.Reviews.Keys)
                 {
-                    
-                    var result = new Result(userId, product.Id, product.Reviews[userId]);
+                    ///convert here product id :  new dict for readed id : new id: ? 
+                    if (!_productIdMap.Keys.Contains(product.Id))
+                    {
+                        _productIdMap.Add(product.Id, _nextIntProd);
+                        _nextIntProd += 1;
+                    }
+                    var result = new Result(userId, _productIdMap[product.Id], product.Reviews[userId]);
                      ResultsList.Add(result);
                 }
             }
@@ -119,6 +123,14 @@ namespace algo3
                     try
                     {
                         reviewsBare.Add(userName, rate);
+                        try
+                        {
+                            _usersReviewsCount.Add(userName, 1);    // first review of that user 
+                        }
+                        catch (Exception) // it is not first review of that user
+                        {
+                            _usersReviewsCount[userName] += 1;   // next review of that user
+                        }
                     }
 
                     catch (Exception) // Key already in dictionary (user has previously reviewed the product)
@@ -134,7 +146,9 @@ namespace algo3
 
             foreach (var userName in reviewsBare.Keys)
             {
-
+                // convert data only for users with more than one rate  
+                if (_usersReviewsCount[userName] > minReviewsAmount)
+                {
                     if (_usersDict.Keys.Contains(userName))
                     {
                         reviewsConverted.Add(_usersDict[userName], reviewsBare[userName]);
@@ -145,6 +159,7 @@ namespace algo3
                         reviewsConverted.Add(_nextInt, reviewsBare[userName]);
                         _nextInt += 1;
                     }
+                }
             }
 
             return reviewsConverted;
